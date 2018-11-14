@@ -7,6 +7,7 @@ type PersistConfig = {
   key: string,
   version: number,
   storage: any, // @TODO add storage typing
+  reviver: (key: string, value: any) => any,
 }
 
 export type PersistStatePartial = {
@@ -25,7 +26,7 @@ export class PersistContainer<State: Object> extends Container<State> {
       try {
         let serialState = await config.storage.getItem(config.key);
         if (serialState !== null) {
-          let incomingState = JSON.parse(serialState)
+          let incomingState = JSON.parse(serialState, config.reviver)
           // @NOTE no migrations yet, just clear state. Can be added later with similar api to redux-persist.
           if (incomingState._persist_version !== config.version) {
             if (process.env.NODE_ENV !== 'production') console.log('unstated-persist: state version mismatch, skipping rehydration')
