@@ -3,7 +3,7 @@ import babel from 'rollup-plugin-babel';
 import pkg from './package.json';
 
 export default {
-  input: 'src/unstated-persist.js',
+  input: 'src/unstated-persist.ts',
   output: [
     {
       file: pkg.main,
